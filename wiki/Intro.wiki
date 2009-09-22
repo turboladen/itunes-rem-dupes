@@ -14,6 +14,7 @@ While iTunes does a fair job of organizing your song files, it only does an aver
 ...it's a bit of a pain to make sure you delete the '01 Song 1.mp3' file instead of the original file.  This probably isn't a big deal to most, but I get a little OCD with my organizing and really just want that original.  
 
 = How it works =
+== Overview ==
 The initial version of the script 
   # searches through each album folder
   # creates an [http://en.wikipedia.org/wiki/Md5sum md5sum] of each file
@@ -22,3 +23,7 @@ The initial version of the script
   # prompts you, asking you if you really want to delete/trash these duplicates
     # If yes, it deletes/trashes them
     # If no, it moves on to the next album folder until done
+
+== Some Features Worth Mentioning ==
+=== Trash ===
+I mentioned "trash" in the previous section for a reason.  Since we're talking about deleting precious music files, the script has an option to "trash" duplicate files.  All this really means is that if this option is turned on, instead of deleting the files, the script will move the duplicates to a pre-defined "trash" directory (which is configurable), thus allowing you to review your duplicates before choosing to delete them for good.
