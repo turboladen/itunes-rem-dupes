@@ -1,9 +1,8 @@
-# probably should actually only allow this at the iTunes Library level,
-# where i store each child in an array (=artist), then act on subdirs.  Each
-# subdir = album, which is stored in another array.  Get the list of files in
-# the album into another array/hash, where each element points to the md5sum
-# generated for that song.  Next compare md5 sums.  If md5sums are ==, check for
-# the file with the " 1" and offer to delete it.
+#!/usr/bin/ruby
+
+#------------------------------------------------------------------------------
+# Version:      1
+#------------------------------------------------------------------------------
 
 require 'digest/md5'
 require 'fileutils'
@@ -11,13 +10,19 @@ require 'logger'
 
 #------------------------------------------------------------------------------
 # SCRIPT SETTINGS:
-# set itunes dir--default is ~/Music/iTunes/
-#@itunes_base = "/Users/sloveless/tmp/iTunes test/"
-@itunes_base = "/Volumes/MEDIA/Music/"
+#
+# Set to use the default folder structure or not.
+use_default_folders = false
 
-# get iTunes Music dir--default is ~/Music/iTunes/iTunes Music/
-# this dir contains the [Artist] directories
-@itunes_music = "#{@itunes_base}/iTunes/"
+# Set up directories to use
+if use_default_folders == true
+  # Use the current user's home folder (i.e. /Users/sloveless/)
+  @itunes_base = ENV['HOME']+"/Music/iTunes/"
+  @itunes_music = "#{@itunes_base}/iTunes Music/"
+else
+  @itunes_base = "/Volumes/MEDIA/Music/"
+  @itunes_music = "#{@itunes_base}/iTunes/"
+end 
 
 # set log file
 @log_file = ENV['HOME']+"/Desktop/itunes_rem_dupes_log.txt"
@@ -34,7 +39,8 @@ require 'logger'
 # matches, the script will just accept, delete, and move to the next.
 # TODO:  NOT YET IMPLEMENTED
 @auto_accept = false
-
+#
+# END SETTINGS
 #------------------------------------------------------------------------------
 
 # init logger
