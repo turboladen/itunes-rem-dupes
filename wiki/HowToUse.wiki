@@ -22,6 +22,8 @@ sl-mbp$ ruby itunes_rem_dupes.rb
 == Prepping the Script ==
 Before running the script, you should check to make sure that it will do the stuff that you need it to do.  Here are the things you'll need to edit before running.
 
+*Note:* Versions > 1 have a {{{ use_default_folders }}} setting that they can set to 'true', which will allow users that are using default locations for their iTunes folders to not have to bother with setting up the following.
+
 === iTunes Base Directory ===
 The script needs to know what the root of your iTunes folder is.  On OSX, the default is ~/Music/iTunes/, where your contents look something like:
 {{{
