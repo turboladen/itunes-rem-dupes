@@ -32,14 +32,13 @@ end
 # choose to use "trash" or not
 # enabling this means moving files to a local folder for review so the user
 # can choose to delete after reviewing.
-@use_trash = true
+@use_trash = false
 if @use_trash == true : @trash_base_dir = ENV['HOME']+"/Music/iTunesTrash" end
 
 # choose to auto-accept deletion.
 # enabling this means that instead of prompting to delete the list of found
 # matches, the script will just accept, delete, and move to the next.
-# TODO:  NOT YET IMPLEMENTED
-@auto_accept = false
+@auto_accept = true
 #
 # END SETTINGS
 #------------------------------------------------------------------------------
@@ -217,13 +216,15 @@ def parse_songs_in album_dir
     
     # Check to make sure we want to go ahead with the deleting
     if proceed?
-      # Create the trash dir if it doesn't exist
-      if @use_trash == true and File.exists? @trash_base_dir
-      # Trash dir already exists on disk
-      elsif @use_trash == true 
-        puts "Making trash dir"
-        @logger.debug "Making trash dir"
-        Dir.mkdir @trash_base_dir
+      if @use_trash == true
+        # Create the trash dir if it doesn't exist
+        if File.exists? @trash_base_dir
+        else 
+        # Trash dir already exists on disk
+          puts "Making trash dir"
+          @logger.debug "Making trash dir"
+          Dir.mkdir @trash_base_dir
+        end
         
         # Create the artist dir in the trash if it doesn't exist
         trash_artist_dir = @trash_base_dir + '/' + @artist_dir
@@ -242,8 +243,7 @@ def parse_songs_in album_dir
           @logger.debug "Making album dir in trash"
           Dir.mkdir trash_album_dir
         end
-      # Otherwise, we're deleting
-      else 
+      elsif @use_trash == false 
       end
       
       # Delete/Trash the duplicates; key = song filename, value = hash
@@ -252,7 +252,7 @@ def parse_songs_in album_dir
         if @use_trash == true
           puts " Moving '#{key}' to '#{trash_album_dir}'..."
           @logger.debug " Moving '#{key}' to '#{trash_album_dir}'..."
-          FileUtils.move(key,File.expand_path(trash_album_dir))
+          FileUtils.move(key,trash_album_dir)
         # Otherwise, delete the file
         else 
           puts " Deleting '#{key}'..."
@@ -266,10 +266,15 @@ end
 
 
 def proceed?
-  good_response = false
+  # If auto_accept was = true, immediately return, accepting to delete files
+  if @auto_accept == true
+    return true
+  end
+  
+  valid_response = false
     
   # Make sure we get a response
-  while good_response == false
+  while valid_response == false
     if @use_trash == true
       puts "Trash these files?"
     else
@@ -293,5 +298,10 @@ def proceed?
   end
 end
 
+def make_trash_dirs
+        puts "Making trash dir"
+        @logger.debug "Making trash dir"
+        Dir.mkdir @trash_base_dir
+end
 
 parse_artists_in @itunes_music
