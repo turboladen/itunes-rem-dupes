@@ -40,7 +40,23 @@ The script needs to know what the root of your iTunes folder is.  On OSX, the de
 +--iTunes Music Library.xml
 }}}
 
-Open the script for editing and look for {{{ @itunes_base }}} in the _SCRIPT SETTINGS_ section.  Make sure this line looks like:
+Open the script for editing and look for {{{ @itunes_base }}} in the _SCRIPT SETTINGS_ section.  If you're using the default iTunes location, make sure this line looks like:
 {{{ 
 @itunes_base = ENV['HOME']+"/Music/iTunes/" 
+}}}
+
+I keep my songs on an external HDD, in a directory called Music so the above doesn't work for me.  For my external HDD named "MEDIA", I set this to:
+{{{
+@itunes_base ="/Volumes/MEDIA/Music/" 
+}}}
+
+=== iTunes Music Directory ===
+The script also needs to know where all your goods are--the music.  This folder usually lives inside the iTunes Base Directory that we just set, above (see the diagram above).  Open the script for editing and look for {{{ @itunes_music }}} in the _SCRIPT SETTINGS_ section.  If you're using the default library settings, make sure this line looks like:
+{{{
+@itunes_music = "#{@itunes_base}/iTunes Music/"
+}}}
+
+Using my external HDD, I keep all of my music in a folder called "iTunes", and thus I use:
+{{{
+@itunes_music = "#{@itunes_base}/iTunes/"
 }}}
