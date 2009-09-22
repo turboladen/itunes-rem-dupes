@@ -1,10 +1,12 @@
 #summary This page describes how to use the script.
 
 = Introduction =
+----
 As this script is really only just that--a script--you might require a little direction pointing to figure out how to get mileage out of it.  This page shows you what you'll need to do to get moving and cleaning up that library.
 
 
 = Getting Started =
+----
 Currently, there isn't much of a user interface (read: there isn't any), so in order to set your options correctly, you'll need to edit the script before executing.  This section gives an overview of how to get started.
 
 == Before Using ==
@@ -16,3 +18,29 @@ While you shouldn't try to run it before you edit it, all you'll need to do to r
 sl-mbp$ ruby itunes_rem_dupes.rb
 }}}
 ...and you're off and running.
+
+== Prepping the Script ==
+Before running the script, you should check to make sure that it will do the stuff that you need it to do.  Here are the things you'll need to edit before running.
+
+=== iTunes Base Directory ===
+The script needs to know what the root of your iTunes folder is.  On OSX, the default is ~/Music/iTunes/, where your contents look something like:
+{{{
++iTunes
+|
++-+/Album Artwork/
+|
++--iTunes Library
+|
++--iTunes Library Extras.itdb
+|
++--iTunes Library Genius.itdb
+|
++-+/iTunes Music/
+|
++--iTunes Music Library.xml
+}}}
+
+Open the script for editing and look for {{{ @itunes_base }}} in the _SCRIPT SETTINGS_ section.  Make sure this line looks like:
+{{{ 
+@itunes_base = ENV['HOME']+"/Music/iTunes/" 
+}}}
