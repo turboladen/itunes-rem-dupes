@@ -79,3 +79,6 @@ The script offers a "trash" feature which moves duplicate files to a pre-defined
 If {{{ @use_trash = true }}}, the script will (obviously) move duplicate files to the directory specified in {{{ @trash_base_dir }}}.  If set to false, the script will automatically delete the duplicate files (*Not working in Version 1*).  
 
 Set {{{ @trash_base_dir }}} to the directory you want the script to move your duplicate files to when {{{ @use_trash = true }}}.  The script will create directories for [Artist]/[Album] and put the duplicates in there to ensure you know where they came from.
+
+== Auto-Accept ==
+By default, the script will prompt you have it's found duplicates for any album, allowing you to skip deletion/trash if you want.  If you're sure you want to always delete/trash, you can set {{{ @auto_accept = true }}} (*Not working in Version 1*).
