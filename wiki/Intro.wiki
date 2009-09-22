@@ -26,4 +26,7 @@ The initial version of the script
 
 == Some Features Worth Mentioning ==
 === Trash ===
-I mentioned "trash" in the previous section for a reason.  Since we're talking about deleting precious music files, the script has an option to "trash" duplicate files.  All this really means is that if this option is turned on, instead of deleting the files, the script will move the duplicates to a pre-defined "trash" directory (which is configurable), thus allowing you to review your duplicates before choosing to delete them for good.
+I mentioned "trash" in the previous section for a reason.  Since we're talking about deleting precious music files, the script has an option to "trash" duplicate files.  All this really means is that if this option is turned on, instead of deleting the files, the script will move the duplicates to a pre-defined "trash" directory (which is configurable), thus allowing you to review your duplicates before choosing to delete them for good.  This option is *on* by default.
+
+=== Logging ===
+Again, since we're talking about deleting data, you should have a clear idea of what activities the script performed during the course of execution.  The log file location is configurable and is set to the current user's *Desktop* folder.
