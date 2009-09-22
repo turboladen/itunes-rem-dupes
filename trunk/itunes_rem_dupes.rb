@@ -172,7 +172,7 @@ def parse_songs_in album_dir
     songs["#{song}"] = md5sum
   end
   
-  # Sort the songs
+  # Sort the songs to make the list easier to read
   songs = songs.sort
   
   # Print song list
@@ -181,11 +181,12 @@ def parse_songs_in album_dir
     @logger.debug " Song:           #{key}"
   end
   
+  # Assign the list of songs as the list of songs we want to find dupes in
   songs_to_compare = songs
   
   # Compare songs in the album to find duplicates
   songs.each do |key, value|
-    #puts " #{key} is #{value}"
+    @logger.debug " Key/Value:      #{key} is #{value}"
     
     curr_song = key
     curr_hash = value
@@ -204,23 +205,24 @@ def parse_songs_in album_dir
       # Check to see if the md5sums are the same
       value.eql? curr_hash
     end
+    # Add the dupes for this song to the list of dupes for this album
     tmp_matches.push(latest_match)
-    
   end
   
-  # Print list of matches
+  # tmp_matches was an array; convert to a hash and sort it (again)
   @matches = Hash[*tmp_matches.flatten]
   @matches = @matches.sort
   
   # Continue if no matches
   if @matches.empty?
   else 
+    # Print list of matches
     puts " Matches:"
     @logger.debug " Matches:"
     @matches.each do |key,value|
       puts "        #{key}"
       @logger.debug "       #{key}"
-      #puts "#{curr_song} matches #{key}"
+      @logger.debug " #{curr_song} matches #{key}"
     end 
     puts ""
     @logger.debug ""
@@ -238,11 +240,13 @@ def parse_songs_in album_dir
         if @use_trash == true
           puts " Moving '#{key}' to '#{@trash_album_dir}'..."
           @logger.debug " Moving '#{key}' to '#{@trash_album_dir}'..."
+          
           FileUtils.move(key,@trash_album_dir)
         # Otherwise, delete the file
         else 
           puts " Deleting '#{key}'..."
           @logger.debug " Deleting '#{key}'..."
+          
           File.delete(key)
         end
       end
