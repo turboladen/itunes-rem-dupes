@@ -32,16 +32,25 @@ end
 # choose to use "trash" or not
 # enabling this means moving files to a local folder for review so the user
 # can choose to delete after reviewing.
-@use_trash = false
-if @use_trash == true : @trash_base_dir = ENV['HOME']+"/Music/iTunesTrash" end
+@use_trash = true
+if @use_trash == true
+  @trash_base_dir = ENV['HOME']+"/Music/iTunesTrash"
+  @trash_artist_dir = ""
+  @trash_album_dir = ""
+end
 
 # choose to auto-accept deletion.
 # enabling this means that instead of prompting to delete the list of found
 # matches, the script will just accept, delete, and move to the next.
-@auto_accept = true
+@auto_accept = false
 #
 # END SETTINGS
 #------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# Setup Global Variables
+# DON'T EDIT THIS SECTION
 
 # init logger
 @logger = Logger.new(@log_file)
@@ -50,6 +59,8 @@ if @use_trash == true : @trash_base_dir = ENV['HOME']+"/Music/iTunesTrash" end
 @artist_dir = ""
 @album_dir = ""
 @matches = Hash.new
+# END Setup Global Variables
+#------------------------------------------------------------------------------
 
 # Start by logging trash dir
 puts "Trash dir: #{@trash_base_dir}"
@@ -217,32 +228,7 @@ def parse_songs_in album_dir
     # Check to make sure we want to go ahead with the deleting
     if proceed?
       if @use_trash == true
-        # Create the trash dir if it doesn't exist
-        if File.exists? @trash_base_dir
-        else 
-        # Trash dir already exists on disk
-          puts "Making trash dir"
-          @logger.debug "Making trash dir"
-          Dir.mkdir @trash_base_dir
-        end
-        
-        # Create the artist dir in the trash if it doesn't exist
-        trash_artist_dir = @trash_base_dir + '/' + @artist_dir
-        if File.exists? trash_artist_dir
-        else 
-          puts "Making artist dir in trash"
-          @logger.debug "Making artist dir in trash"
-          Dir.mkdir trash_artist_dir
-        end
-        
-        # Create the album dir in the trash if it doesn't exist
-        trash_album_dir = trash_artist_dir + '/' + @album_dir
-        if File.exists? trash_album_dir
-        else 
-          puts "Making album dir in trash"
-          @logger.debug "Making album dir in trash"
-          Dir.mkdir trash_album_dir
-        end
+        make_trash_dirs
       elsif @use_trash == false 
       end
       
@@ -250,9 +236,9 @@ def parse_songs_in album_dir
       @matches.each do |key, value|
         # Move to trash, if @use_trash is enabled 
         if @use_trash == true
-          puts " Moving '#{key}' to '#{trash_album_dir}'..."
-          @logger.debug " Moving '#{key}' to '#{trash_album_dir}'..."
-          FileUtils.move(key,trash_album_dir)
+          puts " Moving '#{key}' to '#{@trash_album_dir}'..."
+          @logger.debug " Moving '#{key}' to '#{@trash_album_dir}'..."
+          FileUtils.move(key,@trash_album_dir)
         # Otherwise, delete the file
         else 
           puts " Deleting '#{key}'..."
@@ -265,6 +251,9 @@ def parse_songs_in album_dir
 end
 
 
+#------------------------------------------------------------------------------
+# method:     proceed?
+#------------------------------------------------------------------------------
 def proceed?
   # If auto_accept was = true, immediately return, accepting to delete files
   if @auto_accept == true
@@ -298,10 +287,36 @@ def proceed?
   end
 end
 
+#------------------------------------------------------------------------------
+# method:     make_trash_dirs
+#------------------------------------------------------------------------------
 def make_trash_dirs
-        puts "Making trash dir"
-        @logger.debug "Making trash dir"
-        Dir.mkdir @trash_base_dir
+  # Create the trash dir if it doesn't exist
+  if File.exists? @trash_base_dir
+  else 
+  # Trash dir already exists on disk
+    puts "Making trash dir"
+    @logger.debug "Making trash dir"
+    Dir.mkdir @trash_base_dir
+  end
+  
+  # Create the artist dir in the trash if it doesn't exist
+  @trash_artist_dir = @trash_base_dir + '/' + @artist_dir
+  if File.exists? @trash_artist_dir
+  else 
+    puts "Making artist dir in trash"
+    @logger.debug "Making artist dir in trash"
+    Dir.mkdir @trash_artist_dir
+  end
+  
+  # Create the album dir in the trash if it doesn't exist
+  @trash_album_dir = @trash_artist_dir + '/' + @album_dir
+  if File.exists? @trash_album_dir
+  else 
+    puts "Making album dir in trash"
+    @logger.debug "Making album dir in trash"
+    Dir.mkdir @trash_album_dir
+  end
 end
 
 parse_artists_in @itunes_music
