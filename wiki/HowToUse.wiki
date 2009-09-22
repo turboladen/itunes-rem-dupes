@@ -1,0 +1,18 @@
+#summary This page describes how to use the script.
+
+= Introduction =
+As this script is really only just that--a script--you might require a little direction pointing to figure out how to get mileage out of it.  This page shows you what you'll need to do to get moving and cleaning up that library.
+
+
+= Getting Started =
+Currently, there isn't much of a user interface (read: there isn't any), so in order to set your options correctly, you'll need to edit the script before executing.  This section gives an overview of how to get started.
+
+== Before Using ==
+_Ruby._  As this is a basic Ruby script, you'll need to have Ruby installed to get anywhere with this.  If you're on a Mac, you're probably good to go if you're running Leopard or Snow Leopard; if you're on Windows, you'll probably need to get Ruby from [http://www.ruby-lang.org here].  This script was written with version 1.8.7.
+
+== Running the Script ==
+While you shouldn't try to run it before you edit it, all you'll need to do to run is:
+{{{
+sl-mbp$ ruby itunes_rem_dupes.rb
+}}}
+...and you're off and running.
