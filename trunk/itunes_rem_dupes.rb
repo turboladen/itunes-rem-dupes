@@ -11,7 +11,7 @@ require 'logger'
 # SCRIPT SETTINGS:
 #
 # Set to use the default folder structure or not.
-#------------------------------------------------------------------------------
+#
 USE_DEFAULT_FOLDERS = false
 
 # Set up directories to use
@@ -49,9 +49,9 @@ end
 
 
 #------------------------------------------------------------------------------
-# Setup Global Variables
+# Setup Instance Variables
 # DON'T EDIT THIS SECTION
-
+#
 # init logger
 @logger = Logger.new(@log_file)
 
@@ -59,7 +59,8 @@ end
 @artist_dir = ""
 @album_dir = ""
 @matches = Hash.new
-# END Setup Global Variables
+#
+# END Setup Instance Variables
 #------------------------------------------------------------------------------
 
 # Start by logging trash dir
@@ -146,7 +147,7 @@ def parse_albums_in artist_dir
     # Check out songs in this album directory
     parse_songs_in album_dir
     
-    # Go back to artist dir   to prep for next iteration
+    # Go back to artist dir to prep for next iteration
     Dir.chdir artist_dir
   end
 end
@@ -157,6 +158,7 @@ end
 def parse_songs_in album_dir
   # hash to store song/md5sum pairs to
   songs = Hash.new
+  
   # hash to store song matches
   tmp_matches = Array.new
   
@@ -205,6 +207,7 @@ def parse_songs_in album_dir
       # Check to see if the md5sums are the same
       value.eql? curr_hash
     end
+    
     # Add the dupes for this song to the list of dupes for this album
     tmp_matches.push(latest_match)
   end
@@ -214,8 +217,7 @@ def parse_songs_in album_dir
   @matches = @matches.sort
   
   # Continue if no matches
-  if @matches.empty?
-  else 
+  unless @matches.empty?
     # Print list of matches
     puts " Matches:"
     @logger.debug " Matches:"
@@ -224,6 +226,7 @@ def parse_songs_in album_dir
       @logger.debug "       #{key}"
       @logger.debug " #{curr_song} matches #{key}"
     end 
+    
     puts ""
     @logger.debug ""
     
@@ -273,6 +276,7 @@ def proceed?
     else
       puts "Delete these files?"
     end
+    
     $stdout.flush
     response = $stdin.gets
     exit if response == nil
@@ -296,9 +300,8 @@ end
 #------------------------------------------------------------------------------
 def make_trash_dirs
   # Create the trash dir if it doesn't exist
-  if File.exists? @trash_base_dir
-  else 
-  # Trash dir already exists on disk
+  unless File.exists? @trash_base_dir
+	  # Trash dir already exists on disk
     puts "Making trash dir"
     @logger.debug "Making trash dir"
     Dir.mkdir @trash_base_dir
@@ -306,8 +309,7 @@ def make_trash_dirs
   
   # Create the artist dir in the trash if it doesn't exist
   @trash_artist_dir = @trash_base_dir + '/' + @artist_dir
-  if File.exists? @trash_artist_dir
-  else 
+  unless File.exists? @trash_artist_dir
     puts "Making artist dir in trash"
     @logger.debug "Making artist dir in trash"
     Dir.mkdir @trash_artist_dir
@@ -315,8 +317,7 @@ def make_trash_dirs
   
   # Create the album dir in the trash if it doesn't exist
   @trash_album_dir = @trash_artist_dir + '/' + @album_dir
-  if File.exists? @trash_album_dir
-  else 
+  unless File.exists? @trash_album_dir
     puts "Making album dir in trash"
     @logger.debug "Making album dir in trash"
     Dir.mkdir @trash_album_dir
