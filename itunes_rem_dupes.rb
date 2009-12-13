@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 #------------------------------------------------------------------------------
 # Version:      1
@@ -79,9 +79,9 @@ def parse_artists_in itunes_music
   # Go through each artist
   Dir.foreach(itunes_music) do |artist_dir|
     # If '.' or '..' or some file, skip
-    if artist_dir.eql? "." or artist_dir.eql? ".." or File.stat(artist_dir).file?
-      next
-    end
+    next if artist_dir.eql? "." or \
+            artist_dir.eql? ".." or \
+            File.stat(artist_dir).file?
     
     # Get for later use with trash
     if @use_trash == true
@@ -121,9 +121,9 @@ def parse_albums_in artist_dir
   # Go through each album
   Dir.foreach(artist_dir) do |album_dir|
     # If '.' or '..' or some file, skip
-    if album_dir.eql? "." or album_dir.eql? ".." or File.stat(album_dir).file?
-      next
-    end
+    next if album_dir.eql? "." or \
+            album_dir.eql? ".." or \
+            File.stat(album_dir).file?
     
     # Get for later use with trash
     if @use_trash == true
@@ -163,7 +163,7 @@ def parse_songs_in album_dir
   # Go through all songs and get md5sum
   Dir.foreach(album_dir) do |song|
     # If '.' or '..' or some directory, skip
-    if song.eql? "." or song.eql? ".." or File.stat(song).directory? : next end
+    next if song.eql? "." or song.eql? ".." or File.stat(song).directory?
     
     # Get the md5sum for the file
     md5sum = Digest::MD5.file(song).hexdigest
@@ -194,10 +194,10 @@ def parse_songs_in album_dir
     # Compare current song to other songs in the directory
     latest_match = songs_to_compare.select do |key, value|
       # Skip if comparing the same song
-      if key.eql? curr_song : next end
+      next if key.eql? curr_song
       
       # Skip if the song name (curr_key) is > the match found
-      if curr_song.length > key.length : next end
+      next if curr_song.length > key.length
       
       # Get values if they're the same as the song in question
       #puts "Comparing '#{curr_song}' to #{key}"
