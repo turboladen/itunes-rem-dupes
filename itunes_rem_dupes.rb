@@ -3,7 +3,6 @@
 #------------------------------------------------------------------------------
 # Version:      1
 #------------------------------------------------------------------------------
-
 require 'digest/md5'
 require 'fileutils'
 require 'logger'
@@ -12,10 +11,11 @@ require 'logger'
 # SCRIPT SETTINGS:
 #
 # Set to use the default folder structure or not.
-use_default_folders = false
+#------------------------------------------------------------------------------
+USE_DEFAULT_FOLDERS = false
 
 # Set up directories to use
-if use_default_folders == true
+if USE_DEFAULT_FOLDERS == true
   # Use the current user's home folder (i.e. /Users/sloveless/)
   @itunes_base = ENV['HOME']+"/Music/iTunes/"
   @itunes_music = "#{@itunes_base}/iTunes Music/"
